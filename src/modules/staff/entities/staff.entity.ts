@@ -1,7 +1,9 @@
 import { BaseEntity } from 'src/common/base.entity';
 import { Business } from 'src/modules/businesses/entities/business.entity';
+import { User } from 'src/modules/users/entities/user.entity';
 import {
     Column,
+    DeleteDateColumn,
     Entity,
     Index,
     JoinColumn,
@@ -9,12 +11,15 @@ import {
     Unique,
 } from 'typeorm';
 import { StaffRole } from '../enums/staff-role.enum';
+import { Exclude } from 'class-transformer';
 
 @Entity('staff')
 @Unique(['businessId', 'slug'])
+@Unique(['businessId', 'userId'])
 export class Staff extends BaseEntity {
     @Index()
     @Column()
+    @Exclude()
     businessId: number;
 
     @ManyToOne(() => Business, (business) => business.staff, {
@@ -23,14 +28,26 @@ export class Staff extends BaseEntity {
     @JoinColumn({ name: 'businessId' })
     business: Business;
 
+    @Index()
+    @Column({ type: 'bigint', nullable: true })
+    @Exclude()
+    userId: number | null;
+
+    @ManyToOne(() => User, { nullable: true })
+    @JoinColumn({ name: 'userId' })
+    user: User;
+
     @Column({ length: 120 })
-    name: string;
+    displayName: string;
+
+    @Column({ length: 255 })
+    email: string;
 
     @Column({ unique: false })
     slug: string;
 
     @Column({ nullable: true })
-    photoUrl?: string;
+    profileImageUrl?: string;
 
     @Column({
         type: 'enum',
@@ -48,28 +65,8 @@ export class Staff extends BaseEntity {
     @Column({ type: 'text', nullable: true })
     bio?: string;
 
-    @Column({
-        type: 'jsonb',
-        default: {},
-    })
-    weeklySchedule: Record<string, any>;
-    /**
-     * Example:
-     * {
-     *   monday: { enabled: true, start: "09:00", end: "18:00" },
-     *   tuesday: ...
-     * }
-     */
-
-    @Column({
-        type: 'jsonb',
-        default: [],
-    })
-    blockedDates: string[];
-    /**
-     * Example:
-     * ["2026-12-25", "2026-12-31"]
-     */
+    @Column({ type: 'timestamptz' })
+    joinedAt: Date;
 
     @Column({
         default: true,
@@ -82,9 +79,6 @@ export class Staff extends BaseEntity {
     })
     bufferMinutes: number;
 
-    @Column({
-        type: 'jsonb',
-        default: {},
-    })
-    metadata: Record<string, any>;
+    @DeleteDateColumn({ type: 'timestamptz', nullable: true })
+    deletedAt: Date | null;
 }

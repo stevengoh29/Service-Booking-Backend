@@ -164,13 +164,6 @@ export class Business extends BaseEntity {
     @Column({ type: 'boolean', default: true })
     isActive: boolean;
 
-    /**
-     * Flexible Config
-     * JSONB used intentionally for low-refactor config surfaces
-     */
-    @Column({ type: 'jsonb', default: () => "'{}'" })
-    operatingHours: Record<string, any>;
-
     @Column({ type: 'jsonb', default: () => "'{}'" })
     settings: Record<string, any>;
 

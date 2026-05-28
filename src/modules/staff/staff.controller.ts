@@ -6,12 +6,12 @@ import {
     Param,
     Patch,
     Post,
-    Query,
-    Req
+    Query
 } from '@nestjs/common';
+import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import { User } from '../users/entities/user.entity';
 import { CreateStaffDto } from "./dto/create-staff.dto";
 import { QueryStaffDto } from "./dto/query-staff.dto";
-import { UpdateStaffScheduleDto } from "./dto/update-staff-schedule.dto";
 import { UpdateStaffStatusDto } from "./dto/update-staff-status.dto";
 import { UpdateStaffDto } from "./dto/update-staff.dto";
 import { StaffService } from "./staff.service";
@@ -24,12 +24,12 @@ export class StaffController {
     create(
         @Param('businessUuid') businessUuid: string,
         @Body() dto: CreateStaffDto,
-        @Req() req,
+        @CurrentUser() user: User,
     ) {
         return this.staffService.create(
             businessUuid,
             dto,
-            req.user,
+            user,
         );
     }
 
@@ -37,10 +37,12 @@ export class StaffController {
     findAll(
         @Param('businessUuid') businessUuid: string,
         @Query() query: QueryStaffDto,
+        @CurrentUser() user: User,
     ) {
         return this.staffService.findAll(
             businessUuid,
             query,
+            user,
         );
     }
 
@@ -48,10 +50,12 @@ export class StaffController {
     findOne(
         @Param('businessUuid') businessUuid: string,
         @Param('staffUuid') staffUuid: string,
+        @CurrentUser() user: User,
     ) {
         return this.staffService.findOne(
             businessUuid,
             staffUuid,
+            user,
         );
     }
 
@@ -60,28 +64,13 @@ export class StaffController {
         @Param('businessUuid') businessUuid: string,
         @Param('staffUuid') staffUuid: string,
         @Body() dto: UpdateStaffDto,
-        @Req() req,
+        @CurrentUser() user: User,
     ) {
         return this.staffService.update(
             businessUuid,
             staffUuid,
             dto,
-            req.user,
-        );
-    }
-
-    @Patch(':staffUuid/schedule')
-    updateSchedule(
-        @Param('businessUuid') businessUuid: string,
-        @Param('staffUuid') staffUuid: string,
-        @Body() dto: UpdateStaffScheduleDto,
-        @Req() req,
-    ) {
-        return this.staffService.updateSchedule(
-            businessUuid,
-            staffUuid,
-            dto,
-            req.user,
+            user,
         );
     }
 
@@ -90,13 +79,39 @@ export class StaffController {
         @Param('businessUuid') businessUuid: string,
         @Param('staffUuid') staffUuid: string,
         @Body() dto: UpdateStaffStatusDto,
-        @Req() req,
+        @CurrentUser() user: User,
     ) {
         return this.staffService.updateStatus(
             businessUuid,
             staffUuid,
             dto,
-            req.user,
+            user,
+        );
+    }
+
+    @Patch(':staffUuid/deactivate')
+    deactivate(
+        @Param('businessUuid') businessUuid: string,
+        @Param('staffUuid') staffUuid: string,
+        @CurrentUser() user: User,
+    ) {
+        return this.staffService.deactivate(
+            businessUuid,
+            staffUuid,
+            user,
+        );
+    }
+
+    @Patch(':staffUuid/activate')
+    activate(
+        @Param('businessUuid') businessUuid: string,
+        @Param('staffUuid') staffUuid: string,
+        @CurrentUser() user: User,
+    ) {
+        return this.staffService.activate(
+            businessUuid,
+            staffUuid,
+            user,
         );
     }
 
@@ -104,12 +119,12 @@ export class StaffController {
     remove(
         @Param('businessUuid') businessUuid: string,
         @Param('staffUuid') staffUuid: string,
-        @Req() req,
+        @CurrentUser() user: User,
     ) {
         return this.staffService.remove(
             businessUuid,
             staffUuid,
-            req.user,
+            user,
         );
     }
 }

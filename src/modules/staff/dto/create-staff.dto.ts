@@ -1,23 +1,26 @@
 import {
     IsBoolean,
+    IsEmail,
     IsEnum,
     IsInt,
-    IsObject,
     IsOptional,
     IsString,
     MaxLength,
-    Min,
+    Min
 } from 'class-validator';
 import { StaffRole } from '../enums/staff-role.enum';
 
 export class CreateStaffDto {
     @IsString()
     @MaxLength(120)
-    name: string;
+    displayName: string;
+
+    @IsEmail()
+    email: string;
 
     @IsOptional()
     @IsString()
-    photoUrl?: string;
+    profileImageUrl?: string;
 
     @IsOptional()
     @IsEnum(StaffRole)
@@ -34,10 +37,6 @@ export class CreateStaffDto {
     @IsOptional()
     @IsString()
     bio?: string;
-
-    @IsOptional()
-    @IsObject()
-    weeklySchedule?: Record<string, any>;
 
     @IsOptional()
     @IsInt()
