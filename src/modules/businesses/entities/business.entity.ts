@@ -6,14 +6,11 @@ import {
     Index,
     JoinColumn,
     ManyToOne,
-    OneToMany,
-    Unique,
+    Unique
 } from 'typeorm';
-
-import { Staff } from 'src/modules/staff/entities/staff.entity';
 import { BusinessOnboardingStatus } from '../enums/business-onboarding-status.enum';
-import { SubscriptionTier } from '../enums/subscription-tier.enum';
 import { BusinessStaffSelectionMode } from '../enums/business-staff-selection-mode.enum';
+import { SubscriptionTier } from '../enums/subscription-tier.enum';
 
 @Entity('businesses')
 @Unique(['slug'])
@@ -21,6 +18,7 @@ import { BusinessStaffSelectionMode } from '../enums/business-staff-selection-mo
 @Index('IDX_BUSINESS_SLUG', ['slug'])
 @Index('IDX_BUSINESS_IS_ACTIVE', ['isActive'])
 // @Index('IDX_BUSINESS_NOTIFICATION_CHANNEL_STATUS', ['notificationChannelStatus'])
+
 export class Business extends BaseEntity {
     /**
      * Core Ownership
@@ -152,15 +150,6 @@ export class Business extends BaseEntity {
     // })
     // paymentSetupStatus: PaymentSetupStatus;
 
-    /**
-     * Domain & Activation
-     */
-    @Column({ type: 'varchar', length: 255, nullable: true })
-    customDomain: string | null;
-
-    @Column({ type: 'boolean', default: false })
-    customDomainVerified: boolean;
-
     @Column({ type: 'boolean', default: true })
     isActive: boolean;
 
@@ -182,15 +171,4 @@ export class Business extends BaseEntity {
      */
     @Column({ type: 'jsonb', default: () => "'{}'" })
     metadata: Record<string, any>;
-
-    // Staff
-    @Column({
-        type: 'enum',
-        enum: BusinessStaffSelectionMode,
-        default: BusinessStaffSelectionMode.NO_SELECTION,
-    })
-    staffSelectionMode: BusinessStaffSelectionMode;
-
-    @OneToMany(() => Staff, (staff) => staff.business)
-    staff: Staff[];
 }

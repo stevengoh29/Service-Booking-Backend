@@ -1,5 +1,0 @@
-export enum StaffRole {
-    BUSINESS_OWNER = 'BUSINESS_OWNER',
-    BUSINESS_ADMIN = 'BUSINESS_ADMIN',
-    STAFF = 'STAFF',
-}

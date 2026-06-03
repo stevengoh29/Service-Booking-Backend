@@ -7,7 +7,7 @@ import { UsersModule } from './modules/users/user.module';
 import { CommonModule } from './common/common.module';
 import configuration from './config/configuration';
 import { BusinessesModule } from './modules/businesses/business.module';
-import { StaffModule } from './modules/staff/staff.module';
+import { AvailabilityModule } from './modules/availability/availability.module';
 
 @Module({
   providers: [
@@ -38,7 +38,7 @@ import { StaffModule } from './modules/staff/staff.module';
     CommonModule,
     UsersModule,
     BusinessesModule,
-    StaffModule
+    AvailabilityModule,
   ],
 })
 export class AppModule { }

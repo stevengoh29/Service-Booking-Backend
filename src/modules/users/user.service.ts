@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
+import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class UserService {
@@ -32,9 +33,11 @@ export class UserService {
     }
 
     async getProfile(userId: number): Promise<User> {
-        return this.userRepo.findOneOrFail({
+        const user = await this.userRepo.findOneOrFail({
             where: { id: userId },
         });
+
+        return plainToInstance(User, user);
     }
 
     async updateProfile(
