@@ -1,12 +1,12 @@
 import { BaseEntity } from 'src/common/base.entity';
 import { User } from 'src/modules/users/entities/user.entity';
-import { Column, Entity, Index, JoinColumn, ManyToOne, Unique } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, OneToOne, Unique } from 'typeorm';
 import { BusinessOnboardingStatus } from '../enums/business-onboarding-status.enum';
-import { BusinessStaffSelectionMode } from '../enums/business-staff-selection-mode.enum';
 import { SubscriptionTier } from '../enums/subscription-tier.enum';
 
 @Entity('businesses')
 @Unique(['slug'])
+@Unique(['ownerUserId'])
 @Index('IDX_BUSINESS_OWNER_USER_ID', ['ownerUserId'])
 @Index('IDX_BUSINESS_SLUG', ['slug'])
 @Index('IDX_BUSINESS_IS_ACTIVE', ['isActive'])
@@ -20,7 +20,7 @@ export class Business extends BaseEntity {
   @Column({ type: 'bigint' })
   ownerUserId: number;
 
-  @ManyToOne(() => User, { nullable: false })
+  @OneToOne(() => User, (user) => user.business, { nullable: false })
   @JoinColumn({ name: 'ownerUserId' })
   owner: User;
 

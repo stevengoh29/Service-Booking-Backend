@@ -11,6 +11,7 @@ import {
   Matches,
   IsBoolean,
   IsEnum,
+  IsUUID,
 } from 'class-validator';
 import { SubscriptionTier } from '../enums/subscription-tier.enum';
 
@@ -34,6 +35,10 @@ export class CreateBusinessDto {
   @IsOptional()
   @IsString()
   logo?: string;
+
+  @IsOptional()
+  @IsUUID()
+  logoUploadUuid?: string;
 
   /**
    * Customer Contact Layer

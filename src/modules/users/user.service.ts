@@ -18,6 +18,7 @@ export class UserService {
   }): Promise<User> {
     let user = await this.userRepo.findOne({
       where: { email: payload.email },
+      relations: ['business'],
     });
 
     if (!user) {
@@ -26,7 +27,7 @@ export class UserService {
         name: payload.name ?? 'User',
       });
 
-      await this.userRepo.save(user);
+      user = await this.userRepo.save(user);
     }
 
     return user;
@@ -35,6 +36,7 @@ export class UserService {
   async getProfile(userId: number): Promise<User> {
     const user = await this.userRepo.findOneOrFail({
       where: { id: userId },
+      relations: ['business'],
     });
 
     return plainToInstance(User, user);
@@ -61,6 +63,7 @@ export class UserService {
   }) {
     let existing = await this.userRepo.findOne({
       where: { email: user.email },
+      relations: ['business'],
     });
 
     if (!existing) {
@@ -70,9 +73,12 @@ export class UserService {
         supabaseId: user.id,
       });
 
-      await this.userRepo.save(existing);
+      existing = await this.userRepo.save(existing);
     }
 
-    return existing;
+    return await this.userRepo.findOneOrFail({
+      where: { id: existing.id },
+      relations: ['business'],
+    });
   }
 }
