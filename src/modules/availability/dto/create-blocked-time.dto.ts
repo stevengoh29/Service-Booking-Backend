@@ -1,18 +1,24 @@
-import { IsDateString, IsOptional, IsString, IsUUID, MaxLength } from 'class-validator';
+import {
+  IsDateString,
+  IsOptional,
+  IsString,
+  IsUUID,
+  MaxLength,
+} from 'class-validator';
 
 export class CreateBlockedTimeDto {
-    @IsOptional()
-    @IsUUID()
-    staffUuid?: string;
+  @IsOptional()
+  @IsUUID()
+  staffUuid?: string;
 
-    @IsDateString()
-    startDateTime: string;
+  @IsDateString()
+  startDateTime: string;
 
-    @IsDateString()
-    endDateTime: string;
+  @IsDateString()
+  endDateTime: string;
 
-    @IsOptional()
-    @IsString()
-    @MaxLength(300)
-    reason?: string;
+  @IsOptional()
+  @IsString()
+  @MaxLength(300)
+  reason?: string;
 }

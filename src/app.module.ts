@@ -8,19 +8,21 @@ import { CommonModule } from './common/common.module';
 import configuration from './config/configuration';
 import { BusinessesModule } from './modules/businesses/business.module';
 import { AvailabilityModule } from './modules/availability/availability.module';
+import { CustomersModule } from './modules/customers/customers.module';
+import { ReservationsModule } from './modules/reservations/reservations.module';
 
 @Module({
   providers: [
     {
       provide: APP_GUARD,
       useClass: SupabaseAuthGuard,
-    }
+    },
   ],
 
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [configuration]
+      load: [configuration],
     }),
 
     TypeOrmModule.forRootAsync({
@@ -39,6 +41,8 @@ import { AvailabilityModule } from './modules/availability/availability.module';
     UsersModule,
     BusinessesModule,
     AvailabilityModule,
+    CustomersModule,
+    ReservationsModule,
   ],
 })
-export class AppModule { }
+export class AppModule {}

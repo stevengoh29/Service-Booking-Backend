@@ -7,15 +7,11 @@ import { BlockedTime } from './entities/blocked-time.entity';
 import { BusinessOperatingHours } from './entities/business-operating-hours.entity';
 
 @Module({
-    imports: [
-        TypeOrmModule.forFeature([
-            Business,
-            BusinessOperatingHours,
-            BlockedTime,
-        ]),
-    ],
-    controllers: [AvailabilityController],
-    providers: [AvailabilityService],
-    exports: [AvailabilityService],
+  imports: [
+    TypeOrmModule.forFeature([Business, BusinessOperatingHours, BlockedTime]),
+  ],
+  controllers: [AvailabilityController],
+  providers: [AvailabilityService],
+  exports: [AvailabilityService],
 })
-export class AvailabilityModule { }
+export class AvailabilityModule {}
