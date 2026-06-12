@@ -12,10 +12,39 @@ import {
   IsBoolean,
   IsEnum,
   IsUUID,
+  IsArray,
+  ValidateNested,
+  IsInt,
+  Min,
 } from 'class-validator';
+import { Type } from 'class-transformer';
 import { SubscriptionTier } from '../enums/subscription-tier.enum';
 
+export class CapacityRuleDto {
+  @IsInt()
+  @Min(1)
+  minPartySize: number;
+
+  @IsInt()
+  @Min(1)
+  maxPartySize: number;
+
+  @IsInt()
+  @Min(0)
+  maxActiveReservations: number;
+}
+
 export class CreateBusinessDto {
+
+  /**
+   * Reservation capacity rules per party size ranges
+   */
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CapacityRuleDto)
+  capacityRules?: CapacityRuleDto[];
+
   /**
    * Core Brand
    */

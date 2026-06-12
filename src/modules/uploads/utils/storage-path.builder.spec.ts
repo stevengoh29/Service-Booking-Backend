@@ -14,7 +14,11 @@ describe('StoragePathBuilder', () => {
         assetType: UploadAssetType.BUSINESS_LOGO,
         fileName: 'logo.webp',
       }),
-    ).toBe(`${businessUuid}/logo/logo.webp`);
+    ).toEqual(
+      expect.stringMatching(
+        new RegExp(`^${businessUuid}/logo/[0-9a-f-]{36}\\.webp$`, 'i'),
+      ),
+    );
   });
 
   it('uses the asset uuid for menu image filenames', () => {

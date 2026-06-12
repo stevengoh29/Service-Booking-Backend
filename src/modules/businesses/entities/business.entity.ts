@@ -162,4 +162,15 @@ export class Business extends BaseEntity {
    */
   @Column({ type: 'jsonb', default: () => "'{}'" })
   metadata: Record<string, any>;
+
+  @Column({
+    type: 'jsonb',
+    nullable: true,
+    default: () => "'[]'",
+  })
+  capacityRules: {
+    minPartySize: number;
+    maxPartySize: number;
+    maxActiveReservations: number;
+  }[] | null;
 }

@@ -1,4 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { randomUUID } from 'crypto';
 import { extname, posix } from 'path';
 import { UploadAssetType } from '../enums/upload-asset-type.enum';
 
@@ -17,9 +18,13 @@ export class StoragePathBuilder {
 
     switch (input.assetType) {
       case UploadAssetType.BUSINESS_LOGO:
-        return posix.join(businessUuid, 'logo', `logo.${extension}`);
+        return posix.join(businessUuid, 'logo', `${randomUUID()}.${extension}`);
       case UploadAssetType.BUSINESS_COVER:
-        return posix.join(businessUuid, 'cover', `cover.${extension}`);
+        return posix.join(
+          businessUuid,
+          'cover',
+          `${randomUUID()}.${extension}`,
+        );
       case UploadAssetType.MENU_IMAGE:
         return posix.join(
           businessUuid,
